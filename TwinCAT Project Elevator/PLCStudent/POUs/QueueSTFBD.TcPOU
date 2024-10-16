@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="QueueSTFBD" Id="{80e723bb-e68d-4c48-99af-37a7864f8d0a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK QueueSTFBD
+VAR_INPUT
+	ixQueue : BOOL ;
+	iiOrderQueue : INT ;
+	ixDequeue : BOOL ;
+	iiOrderDequeue : INT ;
+END_VAR
+VAR_OUTPUT
+	qQueue : ARRAY [ 1 .. 3 ] OF INT := [ 0 , 0 , 0 ] ;
+END_VAR
+VAR
+	State : INT ;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE State OF
+	0 :
+		IF ixQueue AND ( NOT InQueue ( iiNum := iiOrderQueue , iaQueue :=
+qQueue ) ) THEN
+			State := 1 ;
+		END_IF
+		IF ixDeQueue AND qQueue [ 1 ] = iiOrderDequeue AND ( NOT ixQueue )
+THEN
+			State := 2 ;
+		END_IF
+
+	1 :
+		//DO QUEUE
+		IF qQueue [ 1 ] = 0 THEN
+			qQueue [ 1 ] := iiOrderQueue ;
+		ELSIF qQueue [ 2 ] = 0 THEN
+			qQueue [ 2 ] := iiOrderQueue ;
+		ELSIF qQueue [ 3 ] = 0 THEN
+			qQueue [ 3 ] := iiOrderQueue ;
+		END_IF
+		State := 0 ;
+	2 :
+		//DO DEQUEUE
+		qQueue [ 1 ] := qQueue [ 2 ] ;
+		qQueue [ 2 ] := qQueue [ 3 ] ;
+		qQueue [ 3 ] := 0 ;
+		State := 0 ;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="QueueSTFBD">
+      <LineId Id="52" Count="26" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

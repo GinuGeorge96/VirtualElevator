@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="BtnRequestFBD" Id="{b402b172-9920-48c7-ba62-269938338d0f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK BtnRequestFBD
+VAR_INPUT
+	ixButtonElevat1 : BOOL ;
+	ixButtonLevel1 : BOOL ;
+	ixButtonElevat2 : BOOL ;
+	ixButtonLevel2 : BOOL ;
+	ixButtonElevat3 : BOOL ;
+	ixButtonLevel3 : BOOL ;
+END_VAR
+VAR_OUTPUT
+	ixQueue : BOOL ;
+	iiQueueOrder : INT ;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF ixButtonElevat1 OR ixButtonLevel1 THEN
+	iiQueueOrder := 1 ;
+	ixQueue := TRUE ;
+ELSIF ixButtonElevat2 OR ixButtonLevel2 THEN
+	iiQueueOrder := 2 ;
+	ixQueue := TRUE ;
+ELSIF ixButtonElevat3 OR ixButtonLevel3 THEN
+	iiQueueOrder := 3 ;
+	ixQueue := TRUE ;
+ELSE
+	iiQueueOrder := - 1 ;
+	ixQueue := FALSE ;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="BtnRequestFBD">
+      <LineId Id="23" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="29" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
